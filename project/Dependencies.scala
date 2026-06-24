@@ -2,7 +2,7 @@ import sbt._
 
 object Version {
   val scalaTest           = "3.0.1"
-  val breeze              = "0.13"
+  val breeze              = "2.1.0"
   val breezeConfig        = "0.9.2"
   val mapdb               = "0.9.2"
   val tikaParsers         = "1.5"

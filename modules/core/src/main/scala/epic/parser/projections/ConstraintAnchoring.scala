@@ -24,6 +24,7 @@ import java.io._
 import epic.trees._
 import collection.mutable.ArrayBuffer
 import breeze.stats.distributions.{Rand, Binomial}
+import breeze.stats.distributions.Rand.VariableSeed.randBasis
 import epic.parser.projections.ParserChartConstraintsFactory.PruningStatistics
 import breeze.linalg._
 import breeze.numerics._

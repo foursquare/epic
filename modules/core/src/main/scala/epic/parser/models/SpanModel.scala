@@ -146,6 +146,8 @@ case class IndexedSpanFeaturizer[L, L2, W](wordFeatureIndex: CrossProductIndex[F
 
   case class Spec(words: IndexedSeq[W]) extends super.Anchoring {
     def length = words.length
+    // breeze 2.x requires an explicit Zero[Array[Int]] for OpenAddressHashArray
+    private implicit val zeroArrayInt: breeze.storage.Zero[Array[Int]] = breeze.storage.Zero(null: Array[Int])
     private val fspec = labelFeaturizer.anchor(words)
     private val sspec = surfaceFeaturizer.anchor(words)
     private val wspec = wordFeaturizer.anchor(words)

@@ -6,7 +6,7 @@ import java.io.FileInputStream
 import java.util.regex.Pattern
 import scala.collection.mutable.HashMap
 import scala.util.Random
-import breeze.linalg.Counter
+import breeze.linalg.{Counter, argtopk}
 import java.io.File
 
 object Word2Vec {
@@ -57,7 +57,7 @@ object Word2Vec {
     }
     println("Read embeddings for " + voc.size + " words from " + word2vecPaths.size + " sources, " +
             "total embedding size = " + finalVectorDim + ", " + numRand + " present in no source")
-    println("Fifty most common misses: " + mostCommonMisses.argtopk(50).map(word => word + ": " + mostCommonMisses(word)))
+    println("Fifty most common misses: " + argtopk(mostCommonMisses, 50).map(word => word + ": " + mostCommonMisses(word)))
     finalVectors
   }
   

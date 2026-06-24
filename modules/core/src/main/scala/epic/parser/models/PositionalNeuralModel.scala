@@ -229,10 +229,10 @@ object PositionalNeuralModel {
           untetra(tetraIdx) = (begin, end, length + 1)
           val fv = new FeatureVector(lspec.featuresForUnaryRule(begin, end, rule, ref))
           if (!ruleCountsPerState.contains(tetraIdx)) ruleCountsPerState.put(tetraIdx, SparseVector.zeros[Double](labelFeaturizer.index.size))
-          axpy(score, fv, ruleCountsPerState(tetraIdx))
+          axpy(score, fv, ruleCountsPerState(tetraIdx): Vector[Double])
           if (decoupledLayers.nonEmpty) {
             if (!unaryRuleCountsPerState.contains(tetraIdx)) unaryRuleCountsPerState.put(tetraIdx, SparseVector.zeros[Double](labelFeaturizer.index.size))
-            axpy(score, fv, unaryRuleCountsPerState(tetraIdx))
+            axpy(score, fv, unaryRuleCountsPerState(tetraIdx): Vector[Double])
           }
         }
 
@@ -241,10 +241,10 @@ object PositionalNeuralModel {
           untetra(tetraIdx) = (begin, end, length + 2)
           val fv = new FeatureVector(lspec.featuresForSpan(begin, end, tag, ref))
           if (!ruleCountsPerState.contains(tetraIdx)) ruleCountsPerState.put(tetraIdx, SparseVector.zeros[Double](labelFeaturizer.index.size))
-          axpy(score, fv, ruleCountsPerState(tetraIdx))
+          axpy(score, fv, ruleCountsPerState(tetraIdx): Vector[Double])
           if (decoupledLayers.nonEmpty) {
             if (!spanCountsPerState.contains(tetraIdx)) spanCountsPerState.put(tetraIdx, SparseVector.zeros[Double](labelFeaturizer.index.size))
-            axpy(score, fv, spanCountsPerState(tetraIdx))
+            axpy(score, fv, spanCountsPerState(tetraIdx): Vector[Double])
           }
         }
 
@@ -253,10 +253,10 @@ object PositionalNeuralModel {
           untetra(tetraIdx) = (begin, split, end)
           val fv = new FeatureVector(lspec.featuresForBinaryRule(begin, split, end, rule, ref))
           if (!ruleCountsPerState.contains(tetraIdx)) ruleCountsPerState.put(tetraIdx, SparseVector.zeros[Double](labelFeaturizer.index.size))
-          axpy(score, fv, ruleCountsPerState(tetraIdx))
+          axpy(score, fv, ruleCountsPerState(tetraIdx): Vector[Double])
           if (decoupledLayers.nonEmpty) {
             if (!binaryRuleCountsPerState.contains(tetraIdx)) binaryRuleCountsPerState.put(tetraIdx, SparseVector.zeros[Double](labelFeaturizer.index.size))
-            axpy(score, fv, binaryRuleCountsPerState(tetraIdx))
+            axpy(score, fv, binaryRuleCountsPerState(tetraIdx): Vector[Double])
           }
         }
       }

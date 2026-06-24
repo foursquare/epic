@@ -152,7 +152,7 @@ object ThreePointModel {
           Double.NegativeInfinity
         } else {
           val rfeats = lspec.featuresForBinaryRule(begin, split, end, rule, ref)
-          (ruleMatrix * new FeatureVector(rfeats)) dot (surfaceAct :* actForPos(split, Point.Split))
+          (ruleMatrix * new FeatureVector(rfeats)) dot (surfaceAct *:* actForPos(split, Point.Split))
         }
       }
 
@@ -218,12 +218,12 @@ object ThreePointModel {
             axpy(score * scale, surfaceAct, dRuleAct(::, f))
           }
 
-          val beginAct = ruleAct :* actForPos(end - 1, Point.Last)
+          val beginAct = ruleAct *:* actForPos(end - 1, Point.Last)
           for(f <- sspec.featuresForWord(begin)) {
             axpy(score * scale, beginAct, dWeights(Point.First.id)(::, f))
           }
 
-          val endAct = ruleAct :* actForPos(begin, Point.First)
+          val endAct = ruleAct *:* actForPos(begin, Point.First)
           for(f <- sspec.featuresForWord(end - 1)) {
             axpy(score * scale, endAct, dWeights(Point.Last.id)(::, f))
           }
@@ -239,12 +239,12 @@ object ThreePointModel {
             axpy(score * scale, surfaceAct, dRuleAct(::, f))
           }
 
-          val actWithoutBegin = ruleAct :* actForPos(end - 1, Point.Last)
+          val actWithoutBegin = ruleAct *:* actForPos(end - 1, Point.Last)
           for(f <- sspec.featuresForWord(begin)) {
             axpy(score * scale, actWithoutBegin, dWeights(Point.First.id)(::, f))
           }
 
-          val actWithoutEnd = ruleAct :* actForPos(begin, Point.First)
+          val actWithoutEnd = ruleAct *:* actForPos(begin, Point.First)
           for(f <- sspec.featuresForWord(end - 1)) {
             axpy(score * scale, actWithoutEnd, dWeights(Point.Last.id)(::, f))
           }
@@ -259,17 +259,17 @@ object ThreePointModel {
             axpy(score * scale, surfaceAct, dRuleAct(::, f))
           }
 
-          val beginAct = ruleAct :* actForPos(end - 1, Point.Last) :* actForPos(split, Point.Split)
+          val beginAct = ruleAct *:* actForPos(end - 1, Point.Last) *:* actForPos(split, Point.Split)
           for(f <- sspec.featuresForWord(begin)) {
             axpy(score * scale, beginAct, dWeights(Point.First.id)(::, f))
           }
 
-          val endAct = ruleAct :* actForPos(begin, Point.First) :* actForPos(split, Point.Split)
+          val endAct = ruleAct *:* actForPos(begin, Point.First) *:* actForPos(split, Point.Split)
           for(f <- sspec.featuresForWord(end - 1)) {
             axpy(score * scale, endAct, dWeights(Point.Last.id)(::, f))
           }
 
-          val splitAct = ruleAct :* surfaceAct
+          val splitAct = ruleAct *:* surfaceAct
           for(f <- sspec.featuresForWord(split)) {
             axpy(score * scale, splitAct, dWeights(Point.Split.id)(::, f))
           }

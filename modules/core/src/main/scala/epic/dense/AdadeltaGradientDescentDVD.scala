@@ -25,10 +25,10 @@ class AdadeltaGradientDescentDVD(maxIter: Int,
     val oldHistory = oldState.history
     // The new gradient gets incorporated during the next round of takeStep,
     // so this computation should lag by one
-    val newG = (oldState.grad :* oldState.grad) * (1 - rho)
+    val newG = (oldState.grad *:* oldState.grad) * (1 - rho)
     axpy(rho, oldHistory.squaredGradientsHistory, newG)
     val deltaX = newX - oldState.x
-    val newU = deltaX :* deltaX * (1 - rho)
+    val newU = deltaX *:* deltaX * (1 - rho)
     axpy(rho, oldHistory.squaredUpdatesHistory, newU)
     new History(newG, newU)
   }
@@ -37,9 +37,9 @@ class AdadeltaGradientDescentDVD(maxIter: Int,
     import state._
     // Need to pre-emptively update the gradient since the history only has it through the
     // last timestep
-    val rmsGt = sqrt((state.history.squaredGradientsHistory * rho) :+ ((state.grad :* state.grad) * (1-rho)) :+ epsilon)
-    val rmsDeltaXtm1 = sqrt(state.history.squaredUpdatesHistory :+ epsilon)
-    val step = dir :* rmsDeltaXtm1 :/ rmsGt
+    val rmsGt = sqrt((state.history.squaredGradientsHistory * rho) +:+ ((state.grad *:* state.grad) * (1-rho)) +:+ epsilon)
+    val rmsDeltaXtm1 = sqrt(state.history.squaredUpdatesHistory +:+ epsilon)
+    val step = dir *:* rmsDeltaXtm1 /:/ rmsGt
     val newX = x
     axpy(1.0, step, newX)
     newX

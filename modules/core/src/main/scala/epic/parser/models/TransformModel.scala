@@ -117,14 +117,14 @@ object TransformModel {
 
         override def visitUnaryRule(begin: Int, end: Int, rule: Int, ref: Int, score: Double): Unit = {
                     checkFlush(begin, length, end)
-                    axpy(score, new FeatureVector(lspec.featuresForUnaryRule(begin, end, rule, ref)), ruleCountsPerState(length))
+                    axpy(score, new FeatureVector(lspec.featuresForUnaryRule(begin, end, rule, ref)), ruleCountsPerState(length): Vector[Double])
         // val ffeats = sspec.featuresForSpan(begin, end)
         // layer.tallyDerivative(deriv, SparseVector(labelFeaturizer.index.size)(lspec.featuresForUnaryRule(begin, end, rule, ref).map(_ -> (scale * score)):_*), new FeatureVector(ffeats))
         }
 
         override def visitSpan(begin: Int, end: Int, tag: Int, ref: Int, score: Double): Unit = {
           checkFlush(begin, length + 1, end)
-          axpy(score, new FeatureVector(lspec.featuresForSpan(begin, end, tag, ref)), ruleCountsPerState(length + 1))
+          axpy(score, new FeatureVector(lspec.featuresForSpan(begin, end, tag, ref)), ruleCountsPerState(length + 1): Vector[Double])
           // val ffeats = sspec.featuresForSpan(begin, end)
           // layer.tallyDerivative(deriv, SparseVector(labelFeaturizer.index.size)(lspec.featuresForSpan(begin, end, tag, ref).map(_ -> (scale * score)):_*), new FeatureVector(ffeats))
         }
@@ -133,7 +133,7 @@ object TransformModel {
           // val ffeats = sspec.featuresForSplit(begin, split, end)
           // layer.tallyDerivative(deriv, SparseVector(labelFeaturizer.index.size)(lspec.featuresForBinaryRule(begin, split, end, rule, ref).map(_ -> (scale * score)):_*), new FeatureVector(ffeats))
           checkFlush(begin, split, end)
-          axpy(score, new FeatureVector(lspec.featuresForBinaryRule(begin, split, end, rule, ref)), ruleCountsPerState(split))
+          axpy(score, new FeatureVector(lspec.featuresForBinaryRule(begin, split, end, rule, ref)), ruleCountsPerState(split): Vector[Double])
         }
       }
 

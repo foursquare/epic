@@ -291,7 +291,7 @@ object SentimentTreebankPipeline extends SerializableLogging {
           AnnotatedLabel("2")
         }
       } else {
-        summed.argmax
+        argmax(summed)
       }
     }
   }

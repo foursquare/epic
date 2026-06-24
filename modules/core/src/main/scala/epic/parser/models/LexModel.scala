@@ -112,6 +112,8 @@ class IndexedLexFeaturizer[L, L2, W](grammar: RuleTopology[L],
   def anchor(datum: IndexedSeq[W]):Spec = new Spec(datum)
 
   class Spec(val words: IndexedSeq[W]) extends Anchoring {
+    // breeze 2.x requires an explicit Zero[Array[Int]] for OpenAddressHashArray
+    private implicit val zeroArrayInt: breeze.storage.Zero[Array[Int]] = breeze.storage.Zero(null: Array[Int])
     private val fspec = ruleFeaturizer.anchor(words)
     private val bilexSpec = bilexFeaturizer.anchor(words)
     private val wordSpec = wordFeaturizer.anchor(words)

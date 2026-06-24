@@ -3,6 +3,7 @@ package epic.inference
 import breeze.linalg._
 import breeze.numerics._
 import breeze.stats.distributions.{Dirichlet, Bernoulli, Gaussian}
+import breeze.stats.distributions.Rand.VariableSeed.randBasis
 
 /**
  *
@@ -88,9 +89,9 @@ object ExpectationPropagation extends App {
   def solve(old: DenseVector[Double], target: DenseVector[Double]) = {
     val guess = copy(old)
     for(i <- 0 until 20) {
-      val t2 = target + digamma(guess.sum)
+      val t2 = target + digamma(sum(guess))
       for(i <- 0 until 5) {
-        guess -= ((digamma(guess) - t2) :/ (( digamma(guess + 1E-4) - digamma(guess))/1E-4))
+        guess -= ((digamma(guess) - t2) /:/ (( digamma(guess + 1E-4) - digamma(guess))/1E-4))
       }
     }
     guess
@@ -99,7 +100,7 @@ object ExpectationPropagation extends App {
 
   def project(q: ApproxTerm, x: Double): (ApproxTerm, Double) = {
     val like = likelihood(x)
-    val target = digamma(q.b) - digamma(q.b.sum) +  (like / (like dot q.b)) - 1/q.b.sum
+    val target = digamma(q.b) - digamma(sum(q.b)) +  (like / (like dot q.b)) - 1/sum(q.b)
     val normalizer:Double = likelihood(x) dot normalize(q.b, 1)
     val mle = solve(q.b, target)
     assert(!normalizer.isNaN,(mle,q.b,like,normalize(q.b,1)))
